@@ -1,0 +1,65 @@
+.filtered {
+  font-size: 16px;
+  user-select: none;
+  min-height: 320px;
+  padding: 20px;
+  box-sizing: content-box;
+}
+
+.filtered .tree,
+.filtered .tree-node,
+.filtered .tree-node-group {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.filtered .tree-branch-wrapper {
+  outline: none;
+}
+
+.filtered .tree-node {
+  cursor: pointer;
+}
+
+.filtered .tree-node {
+  display: inline-block;
+}
+
+.filtered button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.filtered .arrow {
+  margin-left: 5px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.filtered .arrow--open {
+  transform: rotate(90deg);
+}
+
+.filtered [role='treeitem'] {
+  display: inline-flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-left: px-to-rem(2);
+}
+
+.filtered
+  [role='treeitem']:focus-visible
+  label:not(.ant-checkbox-wrapper-disabled):hover
+  > span:nth-of-type(2) {
+  padding-right: px-to-rem(7);
+  margin-right: px-to-rem(1);
+  line-height: px-to-rem(16);
+}
+
+.filtered .tree-node-group,
+.filtered .tree {
+  display: flex;
+  flex-direction: column;
+}
