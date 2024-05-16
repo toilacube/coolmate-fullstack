@@ -13,7 +13,6 @@ import { useSelector } from 'react-redux'
 const Account = () => {
   const [isVisible, setIsVisible] = useState(false)
   const user = useSelector((state) => state.user)
-  console.log(user)
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,

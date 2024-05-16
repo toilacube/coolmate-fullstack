@@ -64,7 +64,6 @@ const RecoveryPass = () => {
       axios
         .request(options)
         .then(function (response) {
-          console.log(response.data)
           router.push('/sign-in')
         })
         .catch(function (error) {

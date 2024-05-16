@@ -63,7 +63,6 @@ const CustomersPage = () => {
     }
     fetchData()
   }, [])
-  console.log(data)
   const columns = [
     {
       id: 'select',

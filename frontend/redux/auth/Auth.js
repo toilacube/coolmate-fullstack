@@ -26,7 +26,6 @@ export const signUp = (email, password, today, navigate) => async (dispatch) => 
     try {
         //call api
         // const response = await UserService.signupUser(email, password, today);
-        console.log(response);
         if (response.status === true) {
             dispatch(logSuccess(response));
             navigate("/");

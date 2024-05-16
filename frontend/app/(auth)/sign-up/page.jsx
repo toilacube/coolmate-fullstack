@@ -55,7 +55,6 @@ const SignUp = () => {
       axios
         .request(options)
         .then(function (response) {
-          console.log(response.data);
           router.push("/sign-in");
           setLoading(false);
         })

@@ -107,7 +107,6 @@ function Orders(props) {
   //     }
   //   ]
 
-  // console.log(currentOrder)
 
   const handleDetailOrder = (index) => {
     window.scrollTo({
@@ -151,7 +150,6 @@ function Orders(props) {
       axios
         .request(options, {})
         .then(function (response) {
-          console.log(response.data);
           handleGetAllOrder();
           setVisibleDetailOrder(false);
         })

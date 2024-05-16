@@ -83,7 +83,6 @@ const ListItemCart = () => {
         .request(options)
         .then(function (response) {
           setResponseData(response.data);
-          // console.log(response.data)
         })
         .catch(function (error) {
           console.error(error);
@@ -171,7 +170,6 @@ const ListItemCart = () => {
       axios
         .request(options, {})
         .then(function (response) {
-          console.log(response.data);
           handleGetCart();
         })
         .catch(function (error) {});
@@ -192,11 +190,9 @@ const ListItemCart = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       };
-      // console.log(options)
       axios
         .request(options, {})
         .then(function (response) {
-          console.log(response.data);
           handleGetCart();
         })
         .catch(function (error) {});
@@ -214,11 +210,9 @@ const ListItemCart = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       };
-      console.log(options);
       axios
         .request(options, {})
         .then(function (response) {
-          console.log(response.data);
           handleGetCart();
         })
         .catch(function (error) {});

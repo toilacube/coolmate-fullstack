@@ -25,9 +25,7 @@ export default function LifetimeSale({ api }) {
       axios
         .request(options)
         .then(function (response) {
-          // console.log(period)
           setSalesData(response.data)
-          //console.log(response.data)
         })
         .catch(function (error) {
           console.error(error.response.data)

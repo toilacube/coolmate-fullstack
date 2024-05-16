@@ -81,7 +81,6 @@ const SignIn = () => {
         },
       }
     );
-    console.log(isAdmin);
     dispatch(updateUser({ ...res?.data, isAdmin, password }));
   };
   const handleSignUp = () => {

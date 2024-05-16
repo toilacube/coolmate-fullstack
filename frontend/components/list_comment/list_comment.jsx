@@ -59,8 +59,6 @@ const ListComment = ({ productId }) => {
     setCurrentStar(value)
   }
 
-  //   console.log(responseReviewData)
-
   const handleAddRating = () => {
     if (!contentCmt)
       openNotificationWithIcon('error', 'Bạn chưa điền bình luận')
@@ -83,7 +81,6 @@ const ListComment = ({ productId }) => {
         axios
           .request(options, {})
           .then(function (response) {
-            console.log(response.data)
             handleGetReview()
           })
           .catch(function (error) {

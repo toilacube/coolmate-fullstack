@@ -39,8 +39,6 @@ export default function SaleStatistic() {
       axios
         .request(options)
         .then(function (response) {
-          // console.log(period)
-          console.log(response.data)
           setData(response.data.data.map((item) => {
             return {...item, time: handleDate(item.time)}
           }))

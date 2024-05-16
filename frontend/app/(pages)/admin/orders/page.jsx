@@ -49,6 +49,7 @@ import { cn, convertPrice, handleDate } from '@/lib/utils'
 import { getApi, putApi } from '@/lib/fetch'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import { ro } from 'date-fns/locale'
 
 const OrdersPage = () => {
   const [sorting, setSorting] = useState()
@@ -57,6 +58,7 @@ const OrdersPage = () => {
   const [columnVisibility, setColumnVisibility] = useState()
   const [rowSelection, setRowSelection] = useState({})
   const [data, setData] = useState([])
+  const [detail, setDetail] = useState(null)
   const status = {
     0: 'Pending',
     1: 'Completed',
@@ -70,7 +72,6 @@ const OrdersPage = () => {
     fetchData()
   }, [])
   const handleProcessPayment = async (id, orderStatus) => {
-    console.log(id, orderStatus)
     const res = await putApi({
       endPoint: `/api/order/updateStatus`,
       data: {
@@ -105,7 +106,37 @@ const OrdersPage = () => {
     {
       accessorKey: 'id',
       header: 'OrderID',
-      cell: ({ row }) => <div className="capitalize">{row.getValue('id')}</div>
+      cell: ({ row }) => <div className="flex flex-col justify-center gap-y-3">
+              <div className="flex flex-col gap-y-[2px]">
+                <p className="font-medium text-sm text-color-black capitalize">
+                  {row.getValue('id')}
+                </p>
+                <p
+                  className="text-xs font-normal text-color-link w-fit"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setDetail((prev) =>
+                      prev === row.getValue('id') ? null : row.getValue('id'),
+                    );
+                  }}
+                >
+                  Detail
+                </p>
+              </div>
+              {detail === row.getValue('id') &&
+                // Object.entries(row.getValue('detail')).map(([k, v]) => (
+                //   <div key={k}>
+                //     <p className="font-medium text-color-detail text-xs">{v}</p>
+                //     <p
+                //       className={`text-sm font-normal text-color-black`}
+                //     >
+                //       {v}
+                //     </p>
+                //   </div>
+                // ))
+                <div>123</div>
+              }
+            </div>
     },
     {
       accessorKey: 'userId',

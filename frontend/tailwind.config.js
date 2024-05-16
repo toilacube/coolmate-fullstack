@@ -78,7 +78,10 @@ module.exports = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out'
-      }
+      },
+      'color-link': '#0D40A6',
+      'color-black': '#242424',
+      'color-detail': '#616161',
     }
   },
   plugins: [require('tailwindcss-animate'), nextui()]

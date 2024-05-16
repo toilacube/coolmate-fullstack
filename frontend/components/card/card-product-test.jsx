@@ -21,9 +21,7 @@ const CardProductTest = (props) => {
     })
   }
 
-  // console.log(product)
   const handleAddCart = (item, productItemId) => {
-    console.log(productItem)
     try {
       const options = {
         method: 'POST',
@@ -39,7 +37,6 @@ const CardProductTest = (props) => {
       axios
         .request(options, {})
         .then(function (response) {
-          console.log(response.data)
           openNotificationWithIcon(
             'success',
             <div

@@ -77,7 +77,6 @@ const CardItemPay = (props) => {
                   .request(options, {
                   })
                   .then(function (response) {
-                    console.log(response.data)
                     setContentCmt("")
                     setRating(0)
                     openNotificationWithIcon('success', 'Đánh giá thành công')

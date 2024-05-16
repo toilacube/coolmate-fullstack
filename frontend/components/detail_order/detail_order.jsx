@@ -9,7 +9,6 @@ import { Rate } from 'antd'
 const DetailOrder = (props) => {
 
     const detailOrder = props.orderData.detailOrder;
-    console.log(detailOrder)
     return (
         <div className="p-8 w-[100%]">
           {detailOrder.id}

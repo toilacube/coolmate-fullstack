@@ -170,7 +170,6 @@ const DetailProduct = ({ productId }) => {
         axios
           .request(options, {})
           .then(function (response) {
-            console.log(response.data)
             openNotificationWithIcon(
               'success',
               <div className="">
@@ -218,7 +217,6 @@ const DetailProduct = ({ productId }) => {
     }
   }
 
-  // console.log(responseData)
 
   return (
     <div className="p-4">
