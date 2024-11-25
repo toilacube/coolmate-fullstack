@@ -2,7 +2,7 @@
 
 ### Database
 
-Open terminal in the current directory  `./final_laravel`:
+Open terminal in the current directory  `./coolmate-fullstack`:
 
 ```
 docker compose up -d
