@@ -6,6 +6,7 @@ const nextConfig = {
       "mcdn.coolmate.me",
       "media2.coolmate.me",
       "res.cloudinary.com",
+      "media3.coolmate.me",
     ],
   },
 };

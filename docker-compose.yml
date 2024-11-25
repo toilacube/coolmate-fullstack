@@ -1,0 +1,14 @@
+services:
+  mysql:
+    image: mysql:8.0.40
+    container_name: mysql_cloud
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: anhyeuem
+      MYSQL_DATABASE: cloud
+      MYSQL_USER: cloud
+      MYSQL_PASSWORD: anhyeuem
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./cloud.sql:/docker-entrypoint-initdb.d/init.sql

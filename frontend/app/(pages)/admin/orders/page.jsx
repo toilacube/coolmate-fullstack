@@ -1,18 +1,18 @@
-'use client'
-import * as React from 'react'
-import { CiFilter } from 'react-icons/ci'
+"use client";
+import * as React from "react";
+import { CiFilter } from "react-icons/ci";
 import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable
-} from '@tanstack/react-table'
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react'
+  useReactTable,
+} from "@tanstack/react-table";
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -22,18 +22,18 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { Input } from '@/components/ui/input'
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
-} from '@/components/ui/table'
-import { isEmpty } from 'lodash'
+  TableRow,
+} from "@/components/ui/table";
+import { isEmpty } from "lodash";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -43,49 +43,50 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger
-} from '@/components/ui/alert-dialog'
-import { cn, convertPrice, handleDate } from '@/lib/utils'
-import { getApi, putApi } from '@/lib/fetch'
-import { useState } from 'react'
-import { useEffect } from 'react'
-import { ro } from 'date-fns/locale'
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { cn, convertPrice, handleDate } from "@/lib/utils";
+import { getApi, putApi } from "@/lib/fetch";
+import { useState } from "react";
+import { useEffect } from "react";
+import { ro } from "date-fns/locale";
+import OrderDetailModal from "../../../../components/order/order-detail-modal";
 
 const OrdersPage = () => {
-  const [sorting, setSorting] = useState()
-  const [filters, setFilters] = useState('id')
-  const [columnFilters, setColumnFilters] = useState()
-  const [columnVisibility, setColumnVisibility] = useState()
-  const [rowSelection, setRowSelection] = useState({})
-  const [data, setData] = useState([])
-  const [detail, setDetail] = useState(null)
+  const [sorting, setSorting] = useState();
+  const [filters, setFilters] = useState("id");
+  const [columnFilters, setColumnFilters] = useState();
+  const [columnVisibility, setColumnVisibility] = useState();
+  const [rowSelection, setRowSelection] = useState({});
+  const [data, setData] = useState([]);
   const status = {
-    0: 'Pending',
-    1: 'Completed',
-    2: 'Cancelled'
-  }
+    0: "Pending",
+    1: "Completed",
+    2: "Cancelled",
+  };
   const fetchData = async () => {
-    const res = await getApi({ endPoint: '/api/order/getAll' })
-    setData(res.data.map((item) => ({ ...item, id: item.id.toString() })))
-  }
+    const res = await getApi({ endPoint: "/api/order/getAll" });
+    setData(res.data.map((item) => ({ ...item, id: item.id.toString() })));
+  };
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
+  console.log(data);
   const handleProcessPayment = async (id, orderStatus) => {
     const res = await putApi({
       endPoint: `/api/order/updateStatus`,
       data: {
         orderId: id,
-        status: orderStatus === 0 ? 1 : 0
-      }
-    })
+        status: orderStatus === 0 ? 1 : 0,
+      },
+    });
     if (res.status === 200) {
-      fetchData()
+      fetchData();
     }
-  }
+  };
   const columns = [
     {
-      id: 'select',
+      id: "select",
       header: ({ table }) => (
         <Checkbox
           checked={table.getIsAllPageRowsSelected()}
@@ -101,63 +102,35 @@ const OrdersPage = () => {
         />
       ),
       enableSorting: false,
-      enableHiding: false
+      enableHiding: false,
     },
     {
-      accessorKey: 'id',
-      header: 'OrderID',
-      cell: ({ row }) => <div className="flex flex-col justify-center gap-y-3">
-              <div className="flex flex-col gap-y-[2px]">
-                <p className="font-medium text-sm text-color-black capitalize">
-                  {row.getValue('id')}
-                </p>
-                <p
-                  className="text-xs font-normal text-color-link w-fit"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setDetail((prev) =>
-                      prev === row.getValue('id') ? null : row.getValue('id'),
-                    );
-                  }}
-                >
-                  Detail
-                </p>
-              </div>
-              {detail === row.getValue('id') &&
-                // Object.entries(row.getValue('detail')).map(([k, v]) => (
-                //   <div key={k}>
-                //     <p className="font-medium text-color-detail text-xs">{v}</p>
-                //     <p
-                //       className={`text-sm font-normal text-color-black`}
-                //     >
-                //       {v}
-                //     </p>
-                //   </div>
-                // ))
-                <div>123</div>
-              }
-            </div>
-    },
-    {
-      accessorKey: 'userId',
-      header: 'UserID',
+      accessorKey: "id",
+      header: "OrderID",
       cell: ({ row }) => (
-        <div className="truncate w-[50px]">{row.getValue('userId')}</div>
-      )
+        <OrderDetailModal id={row.getValue("id")} data={data} />
+      ),
     },
     {
-      accessorKey: 'email',
-      header: 'Email',
+      accessorKey: "userId",
+      header: "UserID",
       cell: ({ row }) => (
-        <div className="truncate w-[200px]">{row.getValue('email')}</div>
-      )
+        <div className="truncate w-[50px]">{row.getValue("userId")}</div>
+      ),
     },
     {
-      accessorKey: 'orderStatus',
+      accessorKey: "email",
+      header: "Email",
+      cell: ({ row }) => (
+        <div className="truncate w-[200px]">{row.getValue("email")}</div>
+      ),
+    },
+    {
+      accessorKey: "orderStatus",
       header: ({ column }) => (
         <div
           className="flex cursor-pointer hover:bg-accent hover:text-accent-foreground py-2 rounded-md"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Status
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -169,15 +142,15 @@ const OrdersPage = () => {
             <Button
               variant="none"
               className={cn(
-                row.getValue('orderStatus') === 0 &&
-                  'rounded-xl bg-zinc-200 w-fit h-6 px-3 capitalize',
-                row.getValue('orderStatus') === 1 &&
-                  'bg-teal-400 rounded-xl w-fit px-3 h-6 capitalize',
-                row.getValue('orderStatus') === 2 &&
-                  'bg-red-400 rounded-xl w-fit px-3 h-6 capitalize pointer-events-none'
+                row.getValue("orderStatus") === 0 &&
+                  "rounded-xl bg-zinc-200 w-fit h-6 px-3 capitalize",
+                row.getValue("orderStatus") === 1 &&
+                  "bg-teal-400 rounded-xl w-fit px-3 h-6 capitalize",
+                row.getValue("orderStatus") === 2 &&
+                  "bg-red-400 rounded-xl w-fit px-3 h-6 capitalize pointer-events-none"
               )}
             >
-              {status[row.getValue('orderStatus')]}
+              {status[row.getValue("orderStatus")]}
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
@@ -194,8 +167,8 @@ const OrdersPage = () => {
               <AlertDialogAction
                 onClick={() =>
                   handleProcessPayment(
-                    row.getValue('id'),
-                    row.getValue('orderStatus')
+                    row.getValue("id"),
+                    row.getValue("orderStatus")
                   )
                 }
               >
@@ -204,29 +177,29 @@ const OrdersPage = () => {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-      )
+      ),
     },
     {
-      accessorKey: 'orderDate',
+      accessorKey: "orderDate",
       header: ({ column }) => (
         <div
           className="flex cursor-pointer hover:bg-accent hover:text-accent-foreground py-2 rounded-md"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Created At
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </div>
       ),
       cell: ({ row }) => (
-        <div className="flex">{handleDate(row.getValue('orderDate'))}</div>
-      )
+        <div className="flex">{handleDate(row.getValue("orderDate"))}</div>
+      ),
     },
     {
-      accessorKey: 'orderTotal',
+      accessorKey: "orderTotal",
       header: ({ column }) => (
         <div
           className="flex cursor-pointer hover:bg-accent hover:text-accent-foreground p-2 rounded-md"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Total
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -235,16 +208,16 @@ const OrdersPage = () => {
       cell: ({ row }) => {
         return (
           <div className="font-medium">
-            {convertPrice(row.getValue('orderTotal'))}
+            {convertPrice(row.getValue("orderTotal"))}
           </div>
-        )
-      }
+        );
+      },
     },
     {
-      id: 'actions',
+      id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
-        const product = row.original
+        const product = row.original;
 
         return (
           <DropdownMenu>
@@ -265,10 +238,10 @@ const OrdersPage = () => {
               <DropdownMenuItem>View customer details</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        )
-      }
-    }
-  ]
+        );
+      },
+    },
+  ];
   const table = useReactTable({
     data,
     columns,
@@ -282,16 +255,16 @@ const OrdersPage = () => {
     onRowSelectionChange: setRowSelection,
     initialState: {
       pagination: {
-        pageSize: 10
-      }
+        pageSize: 10,
+      },
     },
     state: {
       sorting,
       columnFilters,
       columnVisibility,
-      rowSelection
-    }
-  })
+      rowSelection,
+    },
+  });
   return (
     <div className="w-full p-4 pt-6 h-full">
       <div className="justify-between flex">
@@ -303,9 +276,9 @@ const OrdersPage = () => {
             <div className="flex relative">
               <Input
                 placeholder={
-                  filters === 'id' ? 'Search by #id...' : 'Search by email...'
+                  filters === "id" ? "Search by #id..." : "Search by email..."
                 }
-                value={table.getColumn(filters)?.getFilterValue() ?? ''}
+                value={table.getColumn(filters)?.getFilterValue() ?? ""}
                 onChange={(event) =>
                   table.getColumn(filters)?.setFilterValue(event.target.value)
                 }
@@ -355,13 +328,13 @@ const OrdersPage = () => {
                           column.toggleVisibility(!!value)
                         }
                       >
-                        {column.id === 'email'
-                          ? 'Customer Email'
-                          : column.id === 'created_at'
-                          ? 'Created At'
+                        {column.id === "email"
+                          ? "Customer Email"
+                          : column.id === "created_at"
+                          ? "Created At"
                           : column.id}
                       </DropdownMenuCheckboxItem>
-                    )
+                    );
                   })}
               </DropdownMenuContent>
             </DropdownMenu>
@@ -383,16 +356,16 @@ const OrdersPage = () => {
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle className="text-base">
-                      Enable {Object.keys(rowSelection).length}{' '}
+                      Enable {Object.keys(rowSelection).length}{" "}
                       {Object.keys(rowSelection).length > 1
-                        ? 'orders'
-                        : 'order'}
+                        ? "orders"
+                        : "order"}
                     </AlertDialogTitle>
                     <AlertDialogDescription>
-                      Are you sure enable {Object.keys(rowSelection).length}{' '}
+                      Are you sure enable {Object.keys(rowSelection).length}{" "}
                       {Object.keys(rowSelection).length > 1
-                        ? 'orders?'
-                        : 'order?'}
+                        ? "orders?"
+                        : "order?"}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -413,16 +386,16 @@ const OrdersPage = () => {
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle className="text-base">
-                      Disable {Object.keys(rowSelection).length}{' '}
+                      Disable {Object.keys(rowSelection).length}{" "}
                       {Object.keys(rowSelection).length > 1
-                        ? 'orders'
-                        : 'order'}
+                        ? "orders"
+                        : "order"}
                     </AlertDialogTitle>
                     <AlertDialogDescription>
-                      Are you sure disable {Object.keys(rowSelection).length}{' '}
+                      Are you sure disable {Object.keys(rowSelection).length}{" "}
                       {Object.keys(rowSelection).length > 1
-                        ? 'orders?'
-                        : 'order?'}
+                        ? "orders?"
+                        : "order?"}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -450,7 +423,7 @@ const OrdersPage = () => {
                             header.getContext()
                           )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -460,7 +433,7 @@ const OrdersPage = () => {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
+                  data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -487,7 +460,7 @@ const OrdersPage = () => {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{' '}
+          {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="space-x-2">
@@ -509,6 +482,6 @@ const OrdersPage = () => {
         </div>
       </div>
     </div>
-  )
-}
-export default OrdersPage
+  );
+};
+export default OrdersPage;

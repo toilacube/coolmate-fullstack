@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import React, { useState, useMemo } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Label } from '@/components/ui/label'
-import { LeftCircleOutlined } from '@ant-design/icons'
+import React, { useState, useMemo } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Label } from "@/components/ui/label";
+import { LeftCircleOutlined } from "@ant-design/icons";
 import {
   Select,
   SelectContent,
@@ -14,49 +14,49 @@ import {
   SelectItem,
   SelectLabel,
   SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import { DeleteFilled } from '@ant-design/icons'
-import { notification } from 'antd'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { useParams, useRouter } from 'next/navigation'
-import { convertPrice } from '@/lib/utils'
-import axios from 'axios'
-import { useEffect } from 'react'
-import { getApi, putApi } from '@/lib/fetch'
+  SelectValue,
+} from "@/components/ui/select";
+import { DeleteFilled } from "@ant-design/icons";
+import { notification } from "antd";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useParams, useRouter } from "next/navigation";
+import { convertPrice } from "@/lib/utils";
+import axios from "axios";
+import { useEffect } from "react";
+import { getApi, putApi } from "@/lib/fetch";
 
 const EditProductPage = () => {
-  const router = useRouter()
-  const [categories, setCategories] = useState()
-  const param = useParams()
+  const router = useRouter();
+  const [categories, setCategories] = useState();
+  const param = useParams();
   const getAllCategories = (
     url = `${process.env.NEXT_PUBLIC_API_ROOT}/api/category`
   ) => {
     try {
       const options = {
-        method: 'GET',
-        url: url
-      }
+        method: "GET",
+        url: url,
+      };
       axios
         .request(options)
         .then(function (response) {
-          setCategories(response.data)
+          setCategories(response.data);
         })
         .catch(function (error) {
-          console.error(error)
-        })
+          console.error(error);
+        });
     } catch (error) {
-      console.log('Error fetching data:', error)
+      console.log("Error fetching data:", error);
     }
-  }
+  };
   useEffect(() => {
-    getAllCategories()
-  }, [])
-  const [data, setData] = useState()
+    getAllCategories();
+  }, []);
+  const [data, setData] = useState();
   const getProduct = async () => {
     const res = await getApi({
-      endPoint: `/api/product/get/${param.productID}`
-    })
+      endPoint: `/api/product/get/${param.productID}`,
+    });
     setData({
       ...res.data,
       productItems: res.data.productItems.map((item) => {
@@ -64,52 +64,52 @@ const EditProductPage = () => {
           ...item,
           Color: {
             color: item.color,
-            url: item.colorImage
-          }
-        }
-      })
-    })
-  }
+            url: item.colorImage,
+          },
+        };
+      }),
+    });
+  };
   useEffect(() => {
-    getProduct()
-  }, [])
+    getProduct();
+  }, []);
 
-  const listSize = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
-  const [productName, setProductName] = useState('')
-  const [costProduct, setCostProduct] = useState(0)
-  const [numProduct, setNumProduct] = useState(1)
-  const [category, setCategory] = useState('')
-  const [description, setDescription] = useState('')
-  const [color, setColor] = useState({})
-  const [listSizeChose, setListSizeChose] = useState([])
-  const [listImage, setListImage] = useState([])
-  const [listColorChose, setListColorChose] = useState([])
-  const [status, setStatus] = useState('')
-  const [visibility, setVisibility] = useState('')
-  const [id, setId] = useState('')
-  const [api, contextHolder] = notification.useNotification()
+  const listSize = ["XS", "S", "M", "L", "XL", "XXL"];
+  const [productName, setProductName] = useState("");
+  const [costProduct, setCostProduct] = useState(0);
+  const [numProduct, setNumProduct] = useState(1);
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
+  const [color, setColor] = useState({});
+  const [listSizeChose, setListSizeChose] = useState([]);
+  const [listImage, setListImage] = useState([]);
+  const [listColorChose, setListColorChose] = useState([]);
+  const [status, setStatus] = useState("");
+  const [visibility, setVisibility] = useState("");
+  const [id, setId] = useState("");
+  const [api, contextHolder] = notification.useNotification();
   const openNotificationWithIcon = (type, content) => {
     api[type]({
       message: type,
-      description: content
-    })
-  }
+      description: content,
+    });
+  };
 
   const handleCostProductChange = (e) => {
-    setCostProduct(e.target.value)
-  }
+    setCostProduct(e.target.value);
+  };
   const handleProductNameChange = (e) => {
-    setProductName(e.target.value)
-  }
+    setProductName(e.target.value);
+  };
   const handleNumProductChange = (e) => {
-    setNumProduct(e.target.value)
-  }
+    setNumProduct(e.target.value);
+  };
   const handleDescriptionChange = (e) => {
-    setDescription(e.target.value)
-  }
+    setDescription(e.target.value);
+  };
   const handleSetCategory = (value) => {
-    setCategory(value)
-  }
+    setCategory(value);
+  };
 
   const handleUpdateColor = async () => {
     if (
@@ -118,35 +118,53 @@ const EditProductPage = () => {
       listImage.length < 1 ||
       !id
     )
-      openNotificationWithIcon('error', 'Bạn chưa điền đủ thông tin màu sắc')
+      openNotificationWithIcon("error", "Bạn chưa điền đủ thông tin màu sắc");
     else {
-      const res = await putApi({
-        endPoint: `/api/productItem/updateQtyInStock`,
-        data: {
-          productItemId: id,
-          newQty: numProduct
+      try {
+        const res = await putApi({
+          endPoint: `/api/productItem/updateQtyInStock`,
+          data: {
+            productItemId: id,
+            newQty: numProduct,
+          },
+        });
+    
+        if (res.status === 200) {
+          setColor({});
+          setNumProduct(0);
+          setListSizeChose([]);
+          setListImage([]);
+          openNotificationWithIcon("success", `Cập nhật thành công`);
+          getProduct();
+        } 
+       else {
+          console.log('Unexpected response:', res.status);
+          // Handle unexpected response status codes
         }
-      })
-      if (res.status === 200) {
-        setColor({})
-        setNumProduct(0)
-        setListSizeChose([])
-        setListImage([])
-        openNotificationWithIcon('success', `Cập nhật thành công`)
-        getProduct()
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          openNotificationWithIcon("error", `Số lượng không phù hợp`);
+          console.error('Error 400: Invalid item ID or quantity in stock.', error.response.data);
+          // Handle the specific 400 error, e.g., show an error message to the user
+        } else {
+          console.error('An unexpected error occurred:', error);
+          // Handle other errors, e.g., network issues
+        }
       }
     }
-  }
+  };
   const handleStatusChange = (value) => {
-    setStatus(value)
-  }
+    setStatus(value);
+  };
   const handleVisibilityChange = (value) => {
-    setVisibility(value)
-  }
+    setVisibility(value);
+  };
 
   const handleUpdateProduct = async () => {
     if (!productName || !costProduct || !category || listColorChose.length < 1)
-      openNotificationWithIcon('error', 'Bạn chưa điền đủ thông tin sản phẩm')
+      openNotificationWithIcon("error", "Bạn chưa điền đủ thông tin sản phẩm");
+    else if (costProduct < 0)
+      openNotificationWithIcon("error", "Giá sản phẩm không hợp lệ");
     else {
       const res = await putApi({
         endPoint: `/api/product/update`,
@@ -156,38 +174,38 @@ const EditProductPage = () => {
           priceInt: costProduct,
           categoryId: category,
           description: description,
-          priceStr: convertPrice(costProduct)
-        }
-      })
+          priceStr: convertPrice(costProduct),
+        },
+      });
       if (res.status === 200) {
         openNotificationWithIcon(
-          'success',
-          `Thêm sản phẩm ${productName} thành công`
-        )
+          "success",
+          `Cập nhật sản phẩm ${productName} thành công`
+        );
 
-        getProduct()
+        getProduct();
       }
     }
-  }
+  };
 
   useEffect(() => {
     if (data) {
-      setProductName(data.name)
-      setCostProduct(data.priceInt)
-      setCategory(data.categoryId)
-      setDescription(data.description)
-      setStatus(data.status ? 'Enabled' : 'Disabled')
-      setVisibility(data.visibility ? 'Visible' : 'Not visible')
-      setListColorChose(data.productItems)
+      setProductName(data.name);
+      setCostProduct(data.priceInt);
+      setCategory(data.categoryId);
+      setDescription(data.description);
+      setStatus(data.status ? "Enabled" : "Disabled");
+      setVisibility(data.visibility ? "Visible" : "Not visible");
+      setListColorChose(data.productItems);
     }
-  }, [data])
+  }, [data]);
   const handleSetInfor = (item) => {
-    setNumProduct(item.qtyInStock)
-    setColor(item.Color)
-    setListSizeChose(item.size)
-    setListImage(item.productItemImages)
-    setId(item.id)
-  }
+    setNumProduct(item.qtyInStock);
+    setColor(item.Color);
+    setListSizeChose(item.size);
+    setListImage(item.productItemImages);
+    setId(item.id);
+  };
   return (
     <div className="w-[100%]">
       <div className="w-[100%] bg-gray-100 flex flex-row">
@@ -196,7 +214,7 @@ const EditProductPage = () => {
           <div
             className="flex flex-row items-center mb-8 cursor-pointer"
             onClick={() => {
-              router.push('/admin/products')
+              router.push("/admin/products");
             }}
           >
             <LeftCircleOutlined className="text-black text-2xl" />
@@ -246,7 +264,7 @@ const EditProductPage = () => {
                             </SelectItem>
                           ))}
                         </SelectGroup>
-                      )
+                      );
                     })}
                   </ScrollArea>
                 </SelectContent>
@@ -264,7 +282,7 @@ const EditProductPage = () => {
             />
           </div>
           <div className="shadow-md px-8 py-10 mb-6 bg-white rounded-md">
-            <p className="font-bold mb-5">Thêm màu sắc</p>
+            <p className="font-bold mb-5">Chỉnh sửa sản phẩm</p>
             <p className="text-sm mx-2 mb-1 mt-6">Màu sắc</p>
             {Object.keys(color).length > 0 && (
               <div className="flex flex-row items-center mt-2">
@@ -340,7 +358,7 @@ const EditProductPage = () => {
                 ))
               ) : (
                 <p className="text-sm">Chưa có màu nào</p>
-              )}{' '}
+              )}{" "}
             </div>
           </div>
         </div>
@@ -356,7 +374,7 @@ const EditProductPage = () => {
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
                   className={
-                    status === 'Disabled' ? 'border-blue-600 text-blue-600' : ''
+                    status === "Disabled" ? "border-blue-600 text-blue-600" : ""
                   }
                   value="Disabled"
                   id="Disabled"
@@ -366,7 +384,7 @@ const EditProductPage = () => {
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
                   className={
-                    status === 'Enabled' ? 'border-blue-600 text-blue-600' : ''
+                    status === "Enabled" ? "border-blue-600 text-blue-600" : ""
                   }
                   value="Enabled"
                   id="Enabled"
@@ -383,9 +401,9 @@ const EditProductPage = () => {
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
                   className={
-                    visibility === 'Not visible'
-                      ? 'border-blue-600 text-blue-600'
-                      : ''
+                    visibility === "Not visible"
+                      ? "border-blue-600 text-blue-600"
+                      : ""
                   }
                   value="Not visible"
                   id="Not visible"
@@ -395,9 +413,9 @@ const EditProductPage = () => {
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
                   className={
-                    visibility === 'Visible'
-                      ? 'border-blue-600 text-blue-600'
-                      : ''
+                    visibility === "Visible"
+                      ? "border-blue-600 text-blue-600"
+                      : ""
                   }
                   value="Visible"
                   id="Visible"
@@ -417,6 +435,6 @@ const EditProductPage = () => {
         </Button>
       </div>
     </div>
-  )
-}
-export default EditProductPage
+  );
+};
+export default EditProductPage;

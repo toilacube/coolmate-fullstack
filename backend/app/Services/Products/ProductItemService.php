@@ -65,8 +65,9 @@ class ProductItemService
     public function updateQtyInStock($itemId, $qtyInStock)
     {
         $item = ProductItem::where('id', $itemId)->first();
-        if (!$item) {
-            return $this->false;
+        if (!$item || $qtyInStock < 0) {
+            //return $this->false;
+            return  abort(400, 'Invalid item ID or quantity in stock.');
         } else {
             $item->qty_in_stock = $qtyInStock;
             $item->save();

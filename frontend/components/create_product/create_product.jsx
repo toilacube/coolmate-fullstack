@@ -148,6 +148,8 @@ const CreateProduct = () => {
       listImage.length < 1
     )
       openNotificationWithIcon("error", "Bạn chưa điền đủ thông tin màu sắc");
+    else if (numProduct < 0)
+      openNotificationWithIcon("error", "Số lượng không hợp lệ");
     else {
       openNotificationWithIcon("success", `Thêm màu ${color.color} thành công`);
       setListColorChose([
@@ -175,6 +177,8 @@ const CreateProduct = () => {
   const handleAddProduct = () => {
     if (!productName || !costProduct || !category || listColorChose.length < 1)
       openNotificationWithIcon("error", "Bạn chưa điền đủ thông tin sản phẩm");
+    else if (costProduct < 0)
+      openNotificationWithIcon("error", "Giá sản phẩm không hợp lệ");
     else {
       var newProduct = new FormData();
       newProduct.append("Name", productName);

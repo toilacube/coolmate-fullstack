@@ -314,7 +314,7 @@ CREATE TABLE `product` (
   `name` varchar(100) DEFAULT NULL,
   `description` varchar(1000) DEFAULT NULL,
   `price_int` int DEFAULT NULL,
-  `price_str` varchar(10) DEFAULT NULL,
+  `price_str` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_category` (`category_id`),
   CONSTRAINT `fk_category` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`)

@@ -62,6 +62,11 @@ const SignIn = () => {
 
       router.push("/");
     } catch (error) {
+      if(error.response.status === 429){
+        setLoading(false);
+        openNotification("Too many requests!!!");
+        return;
+      }
       setLoading(false);
       openNotification("Username or password is incorrect!!!");
     }

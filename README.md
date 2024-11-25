@@ -1,4 +1,12 @@
-## Coolmate website project 
+## Coolmate website project
+
+### Database
+
+Open terminal in the current directory  `./final_laravel`:
+
+```
+docker compose up -d
+```
 
 ### Frontend
 

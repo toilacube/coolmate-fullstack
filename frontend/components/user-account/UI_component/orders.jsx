@@ -107,7 +107,6 @@ function Orders(props) {
   //     }
   //   ]
 
-
   const handleDetailOrder = (index) => {
     window.scrollTo({
       top: 400,

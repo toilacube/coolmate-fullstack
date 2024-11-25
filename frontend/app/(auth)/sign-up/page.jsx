@@ -41,7 +41,38 @@ const SignUp = () => {
     setConfirmPassword(e.target.value);
   };
 
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
+  const validatePassowrd = (pw) =>{
+    return String(pw)
+    .match(
+     /^(?=.*[0-9])(?=.*[- ?!@#$%^&*\/\\])(?=.*[A-Z])(?=.*[a-z])[a-zA-Z0-9- ?!@#$%^&*\/\\]{8,30}$/
+    );
+  }
+
   const handleSignUp = async () => {
+
+    if (!validateEmail(email)) {
+      openNotification("Email không hợp lệ");
+      return;
+    }
+
+    if (!validatePassowrd(password)) {
+      openNotification("Password phải có đủ 8 ký tự, chứa ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt");
+      return;
+    }
+
+    if(password !== confirmPassword){
+      openNotification("Mật khẩu không khớp");
+      return;
+    }
+
     try {
       setLoading(true);
       const options = {
